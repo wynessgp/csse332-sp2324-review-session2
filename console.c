@@ -4,38 +4,39 @@
 #include <stdbool.h>
 
 #define VIDEO_GAME_TIME 2
-#define MAX_REPORTS 3 // change this if things are taking too long.
+#define MAX_REPORTS 4 // change this if things are taking too long.
 
 int num_reports = 0;
 
 void *thread(void *arg) {
   int thread_num = *(int*)arg;
-  printf("Thread %d says it's their turn on the console!\n", thread_num);
+  printf("Sibling %d says it's their turn on the console!\n", thread_num);
   // leave the above outside of any locks.
 
   /* while (... some condition ...) {
     if (num_reports < MAX_NUM_REPORTS) {
       printf("Sibling %d told your parents!\n", thread_num);
-      num_reports++;
+      ... some code ...
     }
-    pthread_cond_wait(<sibling cond>, <lock>);
+    ... some code ... 
   } */
 
-  printf("Thread %d is on the video game console!\n", thread_num);
+  printf("Sibling %d is on the video game console!\n", thread_num);
   while (1) {
     sleep(VIDEO_GAME_TIME);
     //pthread_mutex_lock(<lock>);
-    //pthread_cond_signal(<sibling signal>); force the "report" count to go up!
+    //pthread_cond_signal(<sibling signal>); // force the "report" count to go up!
 
-    // if (check to see if there are too many reports against you) {
-    //  printf("Thread %d has been kicked off the PS5!\n", thread_num);
-    //  num_reports = 0; // LEAVE THIS! We want to reset the reports for each sibling!
+    // if (check to see if there are too many reports against current sibling) {
+    //  printf("Sibling %d has been kicked off the PS5!\n", thread_num);
+    //  ... some code ... 
     //  break;
     // }
 
-    printf("Thread %d decides to stay on the PS5 for a bit longer! Daring!\n", thread_num);
+    printf("Sibling %d decides to stay on the PS5 for a bit longer! Daring!\n", thread_num);
   }
 
+  return NULL;
 }
 
 

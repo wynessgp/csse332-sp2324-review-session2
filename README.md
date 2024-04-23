@@ -264,7 +264,7 @@ So... we went pretty far back with last exams theme, huh? How about we have one 
 
 ## **Problem 1: [The PS5](console.c)**
 Length: Medium? <br>
-Objective: Get some familiarity with a more *unconventional* critical section and more practice using multiple conditional variables <br>
+Objective: Get some familiarity with a more *unconventional* critical section. <br>
 Files to modify: `console.c`
 
 ### Description: 
@@ -288,9 +288,9 @@ With whatever waiting code we traditionally have near the start of a threaded fu
 while (... some condition ...) {
     if (num_reports < MAX_NUM_REPORTS) {
         printf("Sibling %d told your parents!\n", thread_num);
-        num_reports++;
+        ... some code ... 
     }
-    pthread_cond_wait(...);
+    ... some code ...
 }
 ```
 We're going to force this "periodic" telling by also doing the following, in the console playing loop:
@@ -298,7 +298,7 @@ We're going to force this "periodic" telling by also doing the following, in the
 sleep(TIME_SPENT_ON_VIDEO_GAMES);
 pthread_mutex_lock(<lock>);
 pthread_cond_signal(<sibling signal>);
-// ... some other code here, preferably your checks to see if you're done or not!
+// ... some code ... 
 ```
 I've included this code commented out as well in the actual `console.c` file, so feel free to uncomment it when the time comes. I haven't given you any variable names though, so make sure to fill those out. 
 
@@ -306,8 +306,47 @@ Hopefully the other comments in the file should be enough to give you guidance o
 
 Here's an example of me running my solution:
 ```
-./console.bin 
-<>
+./console.bin
+Sibling 1 has arrived!
+Sibling 1 is on the video game console!
+Sibling 2 has arrived!
+Sibling 2 told your parents!
+Sibling 1 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 2 told your parents!
+Sibling 3 has arrived!
+Sibling 3 told your parents!
+Sibling 1 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 2 told your parents!
+Sibling 1 has been kicked off the PS5!
+Sibling 3 is on the video game console!
+Sibling 2 told your parents!
+Sibling 4 has arrived!
+Sibling 4 told your parents!
+Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 2 told your parents!
+Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 4 told your parents!
+Sibling 5 has arrived!
+Sibling 3 has been kicked off the PS5!
+Sibling 2 is on the video game console!
+Sibling 4 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 4 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 2 has been kicked off the PS5!
+Sibling 4 is on the video game console!
+Sibling 5 told your parents!
+Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 4 has been kicked off the PS5!
+Sibling 5 is on the video game console!
 ```
 
 <a id="problem_two"></a>
