@@ -297,7 +297,7 @@ We're going to force this "periodic" telling by also doing the following, in the
 ```
 sleep(TIME_SPENT_ON_VIDEO_GAMES);
 pthread_mutex_lock(<lock>);
-pthread_cond_signal(<sibling signal>);
+pthread_cond_broadcast(<sibling signal>);
 // ... some code ... 
 ```
 I've included this code commented out as well in the actual `console.c` file, so feel free to uncomment it when the time comes. I haven't given you any variable names though, so make sure to fill those out. 
@@ -318,35 +318,37 @@ Sibling 2 told your parents!
 Sibling 3 has arrived!
 Sibling 3 told your parents!
 Sibling 1 has been kicked off the PS5!
-Sibling 2 is on the PS5!
-Sibling 3 told your parents!
+Sibling 3 is on the PS5!
+Sibling 2 told your parents!
 Sibling 4 has arrived!
 Sibling 4 told your parents!
-Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 3 told your parents!
-Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 4 told your parents!
-Sibling 5 has arrived!
-Sibling 2 has been kicked off the PS5!
-Sibling 3 is on the PS5!
-Sibling 4 told your parents!
-Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
 Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
 Sibling 4 told your parents!
-Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
+Sibling 2 told your parents!
 Sibling 3 has been kicked off the PS5!
 Sibling 4 is on the PS5!
-Sibling 5 told your parents!
+Sibling 2 told your parents!
 Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
+Sibling 2 told your parents!
 Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
+Sibling 2 told your parents!
 Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
+Sibling 2 told your parents!
 Sibling 4 has been kicked off the PS5!
+Sibling 2 is on the PS5!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 has arrived!
+Sibling 5 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 2 has been kicked off the PS5!
 Sibling 5 is on the PS5!
+Sibling 5 decides to stay on the PS5 for a bit longer! Daring!
 ```
 
 <a id="problem_two"></a>

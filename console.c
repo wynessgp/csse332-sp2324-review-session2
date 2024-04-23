@@ -25,7 +25,7 @@ void *thread(void *arg) {
   while (1) {
     sleep(VIDEO_GAME_TIME);
     //pthread_mutex_lock(<lock>);
-    //pthread_cond_signal(<sibling signal>); // force the "report" count to go up!
+    //pthread_cond_broadcast(<sibling signal>); // force the "report" count to go up!
 
     // if (check to see if there are too many reports against current sibling) {
     //  printf("Sibling %d has been kicked off the PS5!\n", thread_num);
@@ -51,7 +51,7 @@ int main() {
   pthread_create(&tid[i++], NULL, thread, (void*)&ids[2]);
   sleep(2);
   pthread_create(&tid[i++], NULL, thread, (void*)&ids[3]);
-  sleep(5);
+  sleep(17);
   pthread_create(&tid[i++], NULL, thread, (void*)&ids[4]);
   sleep(10);
 
