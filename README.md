@@ -308,36 +308,36 @@ Here's an example of me running my solution:
 ```
 ./console.bin
 Sibling 1 has arrived!
-Sibling 1 is on the video game console!
+Sibling 1 is on the PS5!
 Sibling 2 has arrived!
+Sibling 2 told your parents!
+Sibling 1 decides to stay on the PS5 for a bit longer! Daring!
 Sibling 2 told your parents!
 Sibling 1 decides to stay on the PS5 for a bit longer! Daring!
 Sibling 2 told your parents!
 Sibling 3 has arrived!
 Sibling 3 told your parents!
-Sibling 1 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 2 told your parents!
 Sibling 1 has been kicked off the PS5!
-Sibling 3 is on the video game console!
-Sibling 2 told your parents!
+Sibling 2 is on the PS5!
+Sibling 3 told your parents!
 Sibling 4 has arrived!
 Sibling 4 told your parents!
-Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 2 told your parents!
-Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 3 told your parents!
+Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
 Sibling 4 told your parents!
 Sibling 5 has arrived!
-Sibling 3 has been kicked off the PS5!
-Sibling 2 is on the video game console!
-Sibling 4 told your parents!
-Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
-Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 4 told your parents!
-Sibling 2 decides to stay on the PS5 for a bit longer! Daring!
-Sibling 5 told your parents!
 Sibling 2 has been kicked off the PS5!
-Sibling 4 is on the video game console!
+Sibling 3 is on the PS5!
+Sibling 4 told your parents!
+Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 4 told your parents!
+Sibling 3 decides to stay on the PS5 for a bit longer! Daring!
+Sibling 5 told your parents!
+Sibling 3 has been kicked off the PS5!
+Sibling 4 is on the PS5!
 Sibling 5 told your parents!
 Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
 Sibling 5 told your parents!
@@ -346,7 +346,7 @@ Sibling 5 told your parents!
 Sibling 4 decides to stay on the PS5 for a bit longer! Daring!
 Sibling 5 told your parents!
 Sibling 4 has been kicked off the PS5!
-Sibling 5 is on the video game console!
+Sibling 5 is on the PS5!
 ```
 
 <a id="problem_two"></a>
