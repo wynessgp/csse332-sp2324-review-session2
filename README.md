@@ -353,7 +353,49 @@ Sibling 5 decides to stay on the PS5 for a bit longer! Daring!
 
 <a id="problem_two"></a>
 
-## **Problem 2: []()** 
+## **Problem 2: [The Elevator](elevator.c)**
+Length: Medium <br>
+Objective: Get familiar dealing with something similar to band, but with multiple threading functions. <br>
+Files to modify: `elevator.c`
+
+### Description:
+Suppose that in a really weird, messed up hotel, there's an elevator that won't leave its current position UNLESS it reaches max capacity. 
+
+So if I wanted to take the elevator to the second floor, I'd probably be waiting for a while until more people who wanted to go to the second floor showed up. Once we reached max capacity though, the elevator would start moving upwards to the second floor. 
+
+Here's another caveat with this weird elevator: it also won't LEAVE the floor it went to until it reaches capacity, and it doesn't start counting towards the new capacity until everyone leaves the elevator. 
+
+The elevator operators are really, really stingy!
+
+### Implementation Details:
+For the purpose of making this problem a little bit nicer to model, suppose that there's only `2` possible floors in this hotel: the ground floor and the second floor. 
+
+If the elevator's currently at the ground floor, but it isn't full yet, it will wait to leave for the second floor until it fills up. Once it arrives at the second floor, it will do the same waiting process to leave for the ground floor.
+
+Once the elevator reaches a given floor, everyone must get out before the people at the new floor start piling in. 
+
+I've provided you with a couple different scenarios to test your implementation with - here's some important assumptions you can draw from them:
+- There will always be an equal number of people wanting to take the elevator on both the ground and second floor. This means the elevator should always end the program on the ground floor.
+- There will always be enough people to fill the elevator (assuming your implementation works correctly), even if you are waiting for some time.
+- The elevator always starts on the ground floor.
+
+TLDR - you shouldn't deadlock as a result of a bad testing scenario.
+
+Here's some sample output of me running each scenario:
+```
+./elevator 1
+```
+
+```
+./elevator 2
+```
+
+```
+./elevator 3
+```
+
+
+
 
 
 
