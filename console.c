@@ -10,7 +10,7 @@ int num_reports = 0;
 
 void *thread(void *arg) {
   int thread_num = *(int*)arg;
-  printf("Sibling %d says it's their turn on the console!\n", thread_num);
+  printf("Sibling %d has arrived!\n", thread_num);
   // leave the above outside of any locks.
 
   /* while (... some condition ...) {
