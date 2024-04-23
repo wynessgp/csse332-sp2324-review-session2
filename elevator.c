@@ -25,8 +25,9 @@ void *ground_floor(void *arg) {
   // TODO: Use this print to indicate a customer gets on the elevator
   // printf("Ground floor customer %llu is on the elevator!\n", tid);
 
-  // TODO: Uncomment me when the time is right!
+  // TODO: Uncomment and print these when the time is right!
   // printf("Elevator is leaving the ground floor...\n");
+  // printf("\nElevator has reached the second floor, and everyone is off!\n\n")
 
   // TODO: Increment total_trips, total_passengers when the time is right!
 
@@ -46,6 +47,7 @@ void *second_floor(void *arg) {
 
   // TODO: Uncomment me when the time is right!
   // printf("Elevator is leaving the second floor...\n");
+  // printf("\nElevator has reached the ground floor, and everyone is off!\n\n")
 
   // TODO: Increment total_trips, total_passengers when the time is right!
   sleep(SECOND_FLOOR_TRAVEL_TIME);

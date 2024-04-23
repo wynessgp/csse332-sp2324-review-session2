@@ -306,7 +306,7 @@ Hopefully the other comments in the file should be enough to give you guidance o
 
 Here's an example of me running my solution:
 ```
-./console.bin
+$ ./console.bin
 Sibling 1 has arrived!
 Sibling 1 is on the PS5!
 Sibling 2 has arrived!
@@ -372,6 +372,8 @@ For the purpose of making this problem a little bit nicer to model, suppose that
 
 If the elevator's currently at the ground floor, but it isn't full yet, it will wait to leave for the second floor until it fills up. Once it arrives at the second floor, it will do the same waiting process to leave for the ground floor.
 
+Nobody should be able to force their way into the elevator while it's travelling either. 
+
 Once the elevator reaches a given floor, everyone must get out before the people at the new floor start piling in. 
 
 I've provided you with a couple different scenarios to test your implementation with - here's some important assumptions you can draw from them:
@@ -382,16 +384,199 @@ I've provided you with a couple different scenarios to test your implementation 
 TLDR - you shouldn't deadlock as a result of a bad testing scenario.
 
 Here's some sample output of me running each scenario:
+
+#### Scenario 1: 
 ```
-./elevator 1
+$ ./elevator.bin 1
+===== Running scenario 1 =====
+Second floor customer 1 arrived!
+Second floor customer 2 arrived!
+Second floor customer 3 arrived!
+Second floor customer 4 arrived!
+Ground floor customer 1 arrived!
+Ground floor customer 2 arrived!
+Ground floor customer 1 is on the elevator!
+Ground floor customer 4 arrived!
+Ground floor customer 2 is on the elevator!
+Ground floor customer 4 is on the elevator!
+Ground floor customer 3 arrived!
+Ground floor customer 3 is on the elevator!
+Elevator is leaving the ground floor...
+Ground floor customer 2 is leaving the elevator!
+Ground floor customer 3 is leaving the elevator!
+Ground floor customer 1 is leaving the elevator!
+Ground floor customer 4 is leaving the elevator!
+
+Elevator has reached the second floor, and everyone is off!
+
+Second floor customer 4 is on the elevator!
+Second floor customer 1 is on the elevator!
+Second floor customer 2 is on the elevator!
+Second floor customer 3 is on the elevator!
+Second floor customer 1 is leaving the elevator!
+Second floor customer 4 is leaving the elevator!
+Second floor customer 3 is leaving the elevator!
+Second floor customer 2 is leaving the elevator!
+
+Elevator has reached the ground floor, and everyone is off!
+
+
+===== [Scenario 1] Everything finished =====
+Should have 8 passengers making 2 trips, elevator at ground floor.
+
+Verification:
+Trips: PASSED
+Passengers: PASSED
+Elevator position: PASSED
 ```
 
+#### Scenario 2:
 ```
-./elevator 2
-```
+$ ./elevator.bin 2
+===== Running scenario 2 =====
+Ground floor customer 1 arrived!
+Ground floor customer 1 is on the elevator!
+Ground floor customer 2 arrived!
+Ground floor customer 2 is on the elevator!
+Ground floor customer 3 arrived!
+Ground floor customer 3 is on the elevator!
+Ground floor customer 4 arrived!
+Ground floor customer 4 is on the elevator!
+Elevator is leaving the ground floor...
+Second floor customer 5 arrived!
+Second floor customer 6 arrived!
+Ground floor customer 7 arrived!
+Ground floor customer 4 is leaving the elevator!
+Ground floor customer 3 is leaving the elevator!
+Ground floor customer 2 is leaving the elevator!
+Ground floor customer 1 is leaving the elevator!
 
+Elevator has reached the second floor, and everyone is off!
+
+Second floor customer 5 is on the elevator!
+Second floor customer 6 is on the elevator!
+Second floor customer 8 arrived!
+Second floor customer 8 is on the elevator!
+Ground floor customer 10 arrived!
+Ground floor customer 11 arrived!
+Second floor customer 9 arrived!
+Second floor customer 9 is on the elevator!
+Second floor customer 9 is leaving the elevator!
+Second floor customer 6 is leaving the elevator!
+Second floor customer 8 is leaving the elevator!
+Second floor customer 5 is leaving the elevator!
+
+Elevator has reached the ground floor, and everyone is off!
+
+Ground floor customer 11 is on the elevator!
+Ground floor customer 10 is on the elevator!
+Ground floor customer 7 is on the elevator!
+Second floor customer 12 arrived!
+Second floor customer 13 arrived!
+Second floor customer 14 arrived!
+Ground floor customer 15 arrived!
+Ground floor customer 15 is on the elevator!
+Second floor customer 16 arrived!
+Ground floor customer 10 is leaving the elevator!
+Ground floor customer 15 is leaving the elevator!
+Ground floor customer 7 is leaving the elevator!
+Ground floor customer 11 is leaving the elevator!
+
+Elevator has reached the second floor, and everyone is off!
+
+Second floor customer 16 is on the elevator!
+Second floor customer 13 is on the elevator!
+Second floor customer 14 is on the elevator!
+Second floor customer 12 is on the elevator!
+Second floor customer 12 is leaving the elevator!
+Second floor customer 16 is leaving the elevator!
+Second floor customer 13 is leaving the elevator!
+Second floor customer 14 is leaving the elevator!
+
+Elevator has reached the ground floor, and everyone is off!
+
+
+===== [Scenario 2] Everything finished =====
+Should have 16 passengers making 4 trips, elevator at ground floor.
+
+Verification:
+Trips: PASSED
+Passengers: PASSED
+Elevator position: PASSED
 ```
-./elevator 3
+#### Scenario 3:
+```
+$ ./elevator.bin 3
+===== Running scenario 3 =====
+Second floor customer 1 arrived!
+Second floor customer 2 arrived!
+Second floor customer 3 arrived!
+Second floor customer 4 arrived!
+Second floor customer 5 arrived!
+Second floor customer 6 arrived!
+Second floor customer 7 arrived!
+Second floor customer 8 arrived!
+Ground floor customer 9 arrived!
+Ground floor customer 9 is on the elevator!
+Ground floor customer 10 arrived!
+Ground floor customer 10 is on the elevator!
+Ground floor customer 11 arrived!
+Ground floor customer 11 is on the elevator!
+Ground floor customer 12 arrived!
+Ground floor customer 12 is on the elevator!
+Elevator is leaving the ground floor...
+Ground floor customer 13 arrived!
+Ground floor customer 10 is leaving the elevator!
+Ground floor customer 9 is leaving the elevator!
+Ground floor customer 11 is leaving the elevator!
+Ground floor customer 12 is leaving the elevator!
+
+Elevator has reached the second floor, and everyone is off!
+
+Second floor customer 7 is on the elevator!
+Second floor customer 8 is on the elevator!
+Second floor customer 2 is on the elevator!
+Second floor customer 4 is on the elevator!
+Ground floor customer 14 arrived!
+Ground floor customer 15 arrived!
+Ground floor customer 16 arrived!
+Second floor customer 4 is leaving the elevator!
+Second floor customer 2 is leaving the elevator!
+Second floor customer 7 is leaving the elevator!
+Second floor customer 8 is leaving the elevator!
+
+Elevator has reached the ground floor, and everyone is off!
+
+Ground floor customer 13 is on the elevator!
+Ground floor customer 15 is on the elevator!
+Ground floor customer 14 is on the elevator!
+Ground floor customer 16 is on the elevator!
+Ground floor customer 14 is leaving the elevator!
+Ground floor customer 15 is leaving the elevator!
+Ground floor customer 13 is leaving the elevator!
+Ground floor customer 16 is leaving the elevator!
+
+Elevator has reached the second floor, and everyone is off!
+
+Second floor customer 5 is on the elevator!
+Second floor customer 6 is on the elevator!
+Second floor customer 3 is on the elevator!
+Second floor customer 1 is on the elevator!
+Second floor customer 1 is leaving the elevator!
+Second floor customer 3 is leaving the elevator!
+Second floor customer 6 is leaving the elevator!
+Second floor customer 5 is leaving the elevator!
+
+Elevator has reached the ground floor, and everyone is off!
+
+
+===== [Scenario 3] Everything finished =====
+Should have 16 passengers making 4 trips, elevator at ground floor.
+
+Verification:
+Trips: PASSED
+Passengers: PASSED
+Elevator position: PASSED
 ```
 
 
