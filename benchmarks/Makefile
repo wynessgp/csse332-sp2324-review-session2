@@ -10,4 +10,4 @@ without_unlocks.bin: without_unlocks.c
 
 # no need to run this, but it'll clear out your local directory of .bin files
 clean:
-	rm -rf *.bin
+	rm -rf *.o *.bin

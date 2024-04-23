@@ -286,8 +286,8 @@ Since this is a weird condition, I'll give you a helping hand with modeling it.
 With whatever waiting code we traditionally have near the start of a threaded function, you'll want to throw this line in as well:
 ```
 while (... some condition ...) {
-    if (num_reports \< MAX_NUM_REPORTS) {
-        printf("Sibling %d your parents!\n", thread_num);
+    if (num_reports < MAX_NUM_REPORTS) {
+        printf("Sibling %d told your parents!\n", thread_num);
         num_reports++;
     }
     pthread_cond_wait(...);
