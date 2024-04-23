@@ -125,6 +125,8 @@ Instead, you have to `pthread_join` on a particular thread. This is why it's imp
 
 Also, note that you CAN technically get return values from your threads with `pthread_join`, through that `void **retval`, though I would hope that it's a lot easier to just save whatever result off to a global variable instead of having to deal with pointers.
 
+[Back to TOC](#toc)
+
 <a id="global_vars_notes"></a>
 
 ### On Global Variables
@@ -228,6 +230,8 @@ As you can see, that's an almost 4x boost to performance by properly unlocking. 
 
 Also, if you don't properly unlock, you run the risk of completely deadlocking yourself with some functions like sleep. What happens if some error occurs during that time? Guess you're stuck, cause that lock is GONE.
 
+[Back to TOC](#toc)
+
 <a id="signal_and_broadcast_notes"></a>
 
 ### On Using `pthread_cond_signal()`, `pthread_cond_broadcast()`
@@ -254,6 +258,8 @@ Using wait is also important because it stops code flow until you re-awaken the 
 
 ### One more quick thing...
 If you are attempting to **immediately** go for the solution with as few conditional variables as possible, remember that it is often harder to get that correct than it is to just use a lot of conditional variables. Premature optimization is the root of all evil - remember that we grade on correctness first, so if your solution isn't correct, you can't get a lot of points!
+
+[Back to TOC](#toc)
 
 <a id="problem_one"></a>
 
@@ -351,6 +357,8 @@ Sibling 5 is on the PS5!
 Sibling 5 decides to stay on the PS5 for a bit longer! Daring!
 ```
 
+[Back to TOC](#toc)
+
 <a id="problem_two"></a>
 
 ## **Problem 2: [The Elevator](elevator.c)**
@@ -382,6 +390,8 @@ I've provided you with a couple different scenarios to test your implementation 
 - The elevator always starts on the ground floor.
 
 TLDR - you shouldn't deadlock as a result of a bad testing scenario.
+
+<a >
 
 Here's some sample output of me running each scenario:
 
@@ -579,10 +589,4 @@ Passengers: PASSED
 Elevator position: PASSED
 ```
 
-
-
-
-
-
-
-
+[Back to TOC](#toc)
