@@ -254,3 +254,67 @@ Using wait is also important because it stops code flow until you re-awaken the 
 
 ### One more quick thing...
 If you are attempting to **immediately** go for the solution with as few conditional variables as possible, remember that it is often harder to get that correct than it is to just use a lot of conditional variables. Premature optimization is the root of all evil - remember that we grade on correctness first, so if your solution isn't correct, you can't get a lot of points!
+
+<a id="problem_one"></a>
+
+# Practice Problems
+I've provided a makefile for you to compile all of the C files on this exam; so you can get the necessary binaries to run your code by simply typing `make` on the command line. 
+
+So... we went pretty far back with last exams theme, huh? How about we have one in the present?
+
+## **Problem 1: [The PS5](console.c)**
+Length: Medium? <br>
+Objective: Get some familiarity with a more *unconventional* critical section and more practice using multiple conditional variables <br>
+Files to modify: `console.c`
+
+### Description: 
+Hooray! Your parents got you a new PS5 for your birthday! It even came with a copy of Helldivers 2! (I'm not biased, I swear) 
+
+Small issue... your siblings (if you don't have siblings, imagine you do - don't ruin my storytelling!) know that you got it too. You thought things wouldn't be so bad at first, maybe they don't even like video games. Boy, were you wrong.
+
+You're only able to get in a solid two hours max of playing video games before they make your parents mad enough to kick you off the console, saying that "it's their turn to play some games." 
+
+Needless to say, you usually don't get any more time that night because your parents are somehow consistent and let everyone have two hours on the PS5. Woe is you!
+
+### Implementation Details:
+I intend for this problem to be similar to `shower` from the older practice exams, we'll see how that goes. 
+
+You and your siblings are to be modeled by C threads. The critical section is going to be your time on the console - this will be indefinite, until either enough of your siblings tell on you, or they cry to your parents enough times to get you kicked off. Think of it as a "reports" system. You stack up too many reports against you, you get kicked off the console.
+
+Since this is a weird condition, I'll give you a helping hand with modeling it. 
+
+With whatever waiting code we traditionally have near the start of a threaded function, you'll want to throw this line in as well:
+```
+while (... some condition ...) {
+    if (num_reports \< MAX_NUM_REPORTS) {
+        printf("Sibling %d your parents!\n", thread_num);
+        num_reports++;
+    }
+    pthread_cond_wait(...);
+}
+```
+We're going to force this "periodic" telling by also doing the following, in the console playing loop:
+```
+sleep(TIME_SPENT_ON_VIDEO_GAMES);
+pthread_mutex_lock(<lock>);
+pthread_cond_signal(<sibling signal>);
+// ... some other code here, preferably your checks to see if you're done or not!
+```
+I've included this code commented out as well in the actual `console.c` file, so feel free to uncomment it when the time comes. I haven't given you any variable names though, so make sure to fill those out. 
+
+Hopefully the other comments in the file should be enough to give you guidance on what else you need to do. If you're stuck, please ask me for help!
+
+Here's an example of me running my solution:
+```
+./console.bin 
+<>
+```
+
+<a id="problem_two"></a>
+
+## **Problem 2: []()** 
+
+
+
+
+
