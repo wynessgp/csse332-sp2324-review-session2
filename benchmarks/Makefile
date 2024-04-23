@@ -1,13 +1,15 @@
-all: with_unlocks.bin without_unlocks.bin
+.PHONY: all clean
 
-# no dependencies here
+SRCS:=$(wildcard *.c)
+BINS:=$(SRCS:%.c=%.bin)
 
-with_unlocks.bin: with_unlocks.c
-	gcc -pthread with_unlocks.c -o with_unlocks.bin
+CFLAGS+=-ggdb
+LDLIBS+=-pthread
 
-without_unlocks.bin: without_unlocks.c
-	gcc -pthread without_unlocks.c -o without_unlocks.bin
+all: $(BINS)
 
-# no need to run this, but it'll clear out your local directory of .bin files
+%.bin: %.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
 clean:
-	rm -rf *.o *.bin
+	rm -f *.o *.bin
