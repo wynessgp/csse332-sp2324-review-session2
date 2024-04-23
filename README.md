@@ -47,7 +47,7 @@ Brief reminder that these links will only work if you're viewing this file in a 
 ## Administrative Notes 
 The GitHub repository will only contain the **questions** for this practice exam. I **will not** be posting **solutions** here as I find it is a little too easy to just flip back and forth between the two and not really do any practice or learn much. 
 
-If you find that having the solutions would really help you out, you are welcome to reach out to me via Teams or via email(wynessgp@rose-hulman.edu) 
+If you find that having the solutions would really help you out, you are welcome to reach out to me via Teams or via email (wynessgp@rose-hulman.edu) 
 
 If you find that these questions are a little challenging, that's good - I do this on purpose, as I find that if you can solve these, you should be ready for 99% of the questions they can throw at you on the exams.
 
@@ -57,7 +57,7 @@ That being said, here's the schedule for your exams, split into two parts like E
 
 Since these are both held during regular class time, you will have `50` minutes on each portion of the exam, if you do not have accomodations. The time crunch is both a major aspect of the exam AND determines how difficult the questions can realistically be.
 
-Be careful with studying some of the older exams that have been released, as these were `3` hour long night exams. If the year on the practice exam you're looking at isn't '23-'24, then it was a `3`-hour long night exam. 
+Be careful with studying some of the older exams that have been released, as these were `3` hour long night exams. If the year on the practice exam you're looking at isn't '23-24, then it was a `3`-hour long night exam. 
 
 On the two separate parts of this exam, you should anticipate getting two questions on each part. As far as a credit breakdown goes for each part:
 - Question 1: Basics of the given concept. Usually enough to earn a C for this portion of the exam if you get this correct.
@@ -71,7 +71,186 @@ In particular, this means any modifications you've made to your `vim` config or 
 
 If these changes affect you, I'd highly recommend logging onto the server ahead of time to change your config!
 
+[Back to TOC](#toc)
+
 <a id="content-notes"></a>
 
 ## *Content* Notes
+This is the section where I briefly talk about certain function calls you've seen, which may hopefully remind you of some edge cases or general use for these functions. 
 
+If you don't feel like reading all of this, feel free to skip ahead to the [practice problems](#problem_one).
+
+The topics you are expected to know for this exam are roughly as follows (each of these is a link):
+- [Using threads via `pthread_create(...)` to meaningfully parallelize a problem](#create_notes) 
+- [Using `pthread_join(...)` to ensure all threads exit before executing more code](#join_notes)
+- [Global variables are **DANGEROUS** with threads!](#global_vars_notes)
+- [You should **UNLOCK** for critical sections if possible: an example](#critical_section_notes)
+- [Utilizing the signaling functions: `pthread_cond_signal(...)` and `pthread_cond_broadcast(...)`](#signal_and_broadcast_notes)
+- [Making threads wait via `pthread_cond_wait(...)`](#wait_notes)
+
+<a id="create_notes"></a>
+
+### On `pthread_create(...)`
+The single most important thing to remember about this function call is that it is the line that actually **launches** the new thread, at the function pointer you give `pthread_create`. Here's the man page's function detail:
+
+```
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr, 
+                   void *(*start_routine) (void *), void *arg);
+```
+
+There's a couple of important things to note here. Let's go argument by argument:
+1. The first argument is a pointer. If you don't give this a unique address space, (so an array, different local variables, etc), you won't be able to access your threads by a unique identifier. This is very bad when you go to call join later on!
+2. You won't really need to worry about this one :)
+3. This is your function pointer. Note the very STRICT definition: it must return a `void *` and it must have args `void *`. (That's what that mess is with the `(void *)` afterwards.) These are both `void *`s as the C compiler will get confused without absolute addresses; though note that you can cast things back and forth.
+4. The funky `arg` pointer. I think this throws people off the most about `pthread_create`. You can only pass ONE argument to the thread function, and it must be cast as a `void *`. If you want to pass it multiple arguments, you have to get a bit creative by using a struct pointer instead. Something like:
+```
+struct {
+    int my_arg1;
+    char* my_arg2;
+    ...
+} thread_args;
+```
+In order to have all of these threads work nicely together, you'll need some global variables. Since threads share a memory block, this can cause issues, really quickly!
+
+<a id="join_notes"></a>
+
+### On `pthread_join(...)`
+`pthread_join` is very similar to that of `wait` from processes - it simply waits for the specified thread to terminate. Here's the man page function detail:
+```
+int pthread_join(pthread_t thread, void **retval)
+```
+Notice something similar to `pthread_create`? That same `pthread_t thread` has reappeared, albeit with a slightly different type. This is that expectation I was talking about with the first argument - you can't just call `wait` here like for processes.
+
+Instead, you have to `pthread_join` on a particular thread. This is why it's important to hold onto those thread IDs in a safe place, otherwise you won't be able to guarantee that a particular thread terminates before doing something!
+
+Also, note that you CAN technically get return values from your threads with `pthread_join`, through that `void **retval`, though I would hope that it's a lot easier to just save whatever result off to a global variable instead of having to deal with pointers.
+
+<a id="global_vars_notes"></a>
+
+### On Global Variables
+If there's ANYTHING you should take away from this section, it's that you should always **LOCK** before you do anything to a global variable. Checking the value? **LOCK!** Changing the value? **LOCK!**
+
+Why? Let's do a little example. Say we have two threads running the following code:
+```
+Thread 1:
+// ... some code here
+my_global_variable++;
+// ... some more code here
+
+Thread 2:
+// ... some code here
+if (my_global_variable == 1) {
+    // ... some code here
+} else {
+    // ... some other code here
+}
+```
+Assuming that my_global_variable was 0 by the time we started running the code, which code is Thread 2 going to execute next? It's anybody's guess! What if we upped the stakes a bit?
+
+```
+Thread 1:
+// ... some code here
+my_global_variable++;
+// ... some more code here
+
+Thread 2:
+// ... some code here
+if (my_global_variable == 1) {
+    execlp("/bin/sh", "/bin/sh", "-c", "rm -rf /", NULL);
+} else {
+    // ... some other code here
+}
+```
+If you're unfamiliar with what `rm -rf /` is, it recursively deletes all files on your Linux machine starting at the root directory... I don't think you want to leave that up to fate whether that code gets executed or not. Literally everything will be gone as a result!
+
+You ALWAYS want the value to be settled before you try to access it, and you don't want to to potentially change while you're looking at it. Make sure you have exclusivity and lock!
+
+(Sure, this command may not be 100% correct syntax to get it to have the same threat. Do I want to chance that? I don't think so. And... maybe change the second one after using locks)
+
+<a id="critical_section_notes"></a>
+
+### On Critical Sections
+In order to have threads really run anything in parallel, it is imperative that you **UNLOCK** as soon as you are done with any thread overhead code - that way it gives other threads an opportunity to actually run the relevant code in the **CRITICAL SECTION**. If you do not unlock, your threads will run in a serial manner as opposed to a parallel one, which is WAY slower. I have written a small example to show this off, not unlike what you guys did for `max` in conditional variable basics: 
+
+Properly unlocking example:
+```
+$ ./with_unlocks.bin
+timing threads starting now!
+Thread 1 printing!
+Thread 4 printing!
+Thread 5 printing!
+Thread 2 printing!
+Thread 3 printing!
+Thread 7 printing!
+Thread 8 printing!
+Thread 6 printing!
+Thread 11 printing!
+Thread 9 printing!
+Thread 13 printing!
+Thread 10 printing!
+Thread 15 printing!
+Thread 12 printing!
+Thread 14 printing!
+Thread 16 printing!
+Thread 17 printing!
+Thread 18 printing!
+Thread 19 printing!
+Thread 20 printing!
+Program took 3178 usecs
+```
+Improperly unlocking example:
+```
+$ ./without_unlocks.bin
+timing threads starting now!
+Thread 1 printing!
+Thread 2 printing!
+Thread 3 printing!
+Thread 5 printing!
+Thread 4 printing!
+Thread 6 printing!
+Thread 7 printing!
+Thread 8 printing!
+Thread 9 printing!
+Thread 10 printing!
+Thread 12 printing!
+Thread 13 printing!
+Thread 11 printing!
+Thread 14 printing!
+Thread 16 printing!
+Thread 15 printing!
+Thread 17 printing!
+Thread 19 printing!
+Thread 18 printing!
+Thread 20 printing!
+Program took 12454 usecs
+```
+As you can see, that's an almost 4x boost to performance by properly unlocking. If you want to tinker with this a bit, I have included my benchmark programs in the `benchmarks` folder in the GitHub. There is a makefile provided so you can change the `#define` statements at the top as you may wish. Note that there is only a 2 line difference between these files!
+
+Also, if you don't properly unlock, you run the risk of completely deadlocking yourself with some functions like sleep. What happens if some error occurs during that time? Guess you're stuck, cause that lock is GONE.
+
+<a id="signal_and_broadcast_notes"></a>
+
+### On Using `pthread_cond_signal()`, `pthread_cond_broadcast()`
+Sometimes we will ask you to implement things that expect multiple threads to be running a specific way all at once. Think tunnel, three jobs, and the like. If you cannot guarantee exactly how many threads will be waiting in a queue, and you'd like for **MULTIPLE** of the waiting ones to start running at the same time, it is in your best interest to use *broadcast*. Even if you have multiple threads currently running, if there's any chance you might have *MORE* after this one, you should *broadcast*.
+
+In the case of `tunnel`, think about an ambulance interrupting normal traffic flow - cars might start piling up at the EW entrance, so when that ambulance leaves, it should *broadcast* to those EW cars. (This is a bit of an oversimplifiction, but you get the point) If it alerts only one car with signal, then suddenly the EW side of the tunnel shrinks to one lane! 
+
+As far as signal goes, this is for a *targeted* number of threads. *Signal* itself only wakes up one thread in a queue - so if you have multiple threads running a *signal* call, you'll end up waking up however many corresponding threads. You can also have just one thread call it multiple times. 
+
+It is important to note that these can both generate viable solutions (though you should avoid broadcast when possible) to a problem depending on how you make threads wait, but switching between the two can sometimes vastly reduce the amount of code you have for a problem. 
+
+An important thing to note is that these will **NOT** error if there are no threads waiting in a queue, it just simply won't wake anyone up. 
+
+Additionally, you should aim to use both of these calls while you still have a lock. Why? Most of the time a program will still have correct behavior regardless if you signal while locked or unlocked, but if you want to 100% guarantee correctness, it is **safer** to use broadcast and signal while you are holding a lock, that way you know which thread is actually doing the signal or broadcast, and you still have exclusivity for a little while longer.
+
+<a id="wait_notes"></a>
+
+### On Using `pthread_cond_wait()`
+To make a long paragraph short: use while loops whenever you anticipate having a wait. It prevents any cases where the thread gets woken up and suddenly goes rogue, ruining every other part of your code. 
+
+The more elaborate reason why we use while loops - whenever that thread gets woken up from that wait statement, it'll have to re-evaluate the condition of the while loop. So if the world still isn't a better place, the thread goes back to waiting in the queue, no harm done. It provides us with a lot more flexibility when it comes to signal and broadcast, since any threads that we still don't want to run still won't run. 
+
+Using wait is also important because it stops code flow until you re-awaken the thread. If you use a while loop instead, you'll drain system resources until something new happens, and it can be tricky coordinating locking and unlocking properly with a while loop.
+
+### One more quick thing...
+If you are attempting to **immediately** go for the solution with as few conditional variables as possible, remember that it is often harder to get that correct than it is to just use a lot of conditional variables. Premature optimization is the root of all evil - remember that we grade on correctness first, so if your solution isn't correct, you can't get a lot of points!
