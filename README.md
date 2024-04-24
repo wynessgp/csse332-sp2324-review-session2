@@ -40,7 +40,6 @@ Brief reminder that these links will only work if you're viewing this file in a 
 [Content Notes](#content_notes) <br>
 [Problem 1](#problem_one) <br>
 [Problem 2](#problem_two) <br>
-[Problem 3](#problem_three) <br>
 
 <a id="admin_notes"></a>
 
